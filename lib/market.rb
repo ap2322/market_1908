@@ -1,6 +1,4 @@
-require './lib/vendor'
-
-class Market < Vendor
+class Market 
   attr_reader :name, :vendors
 
   def initialize(name)
