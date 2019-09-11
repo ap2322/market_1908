@@ -35,5 +35,20 @@ class Market
     vendors_with_item
   end
 
-  
+  def total_inventory
+    all_inv = vendors.map do |vendor|
+      vendor.inventory
+    end
+
+    all_inv_hash = {}
+    all_inv.each do |inv_hash|
+      all_inv_hash.merge!(inv_hash){|key, oldv, newv| oldv + newv}
+    end
+    all_inv_hash
+  end
+
+  def sorted_item_list
+    total_inventory.keys.uniq.sort_by {|key| key}
+  end
+
 end
