@@ -18,4 +18,21 @@ class VendorTest < Minitest::Test
     assert_equal "Rocky Mountain Fresh", @vendor.name
     assert_equal expected_inventory, @vendor.inventory
   end
+
+  def test_check_and_add_stock
+    assert_equal 0, @vendor.check_stock("Peaches")
+
+    @vendor.stock("Peaches", 30)
+
+    assert_equal 30, @vendor.check_stock("Peaches")
+
+    @vendor.stock("Peaches", 25)
+
+    assert_equal 55, @vendor.check_stock("Peaches")
+
+    @vendor.stock("Tomatoes", 12)
+    expected_inventory = {"Peaches" => 55, "Tomatoes" => 12}
+
+    assert_equal expected_inventory, @vendor.inventory
+  end
 end
