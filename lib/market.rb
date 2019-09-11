@@ -1,17 +1,11 @@
-class Market
+require './lib/vendor'
+
+class Market < Vendor
   attr_reader :name, :vendors
 
   def initialize(name)
     @name = name
     @vendors = []
-  end
-
-  def check_stock(item_name)
-    inventory[item_name]
-  end
-
-  def stock(item_name, quantity)
-    inventory[item_name] += quantity
   end
 
   def add_vendor(vendor)
@@ -48,7 +42,20 @@ class Market
   end
 
   def sorted_item_list
-    total_inventory.keys.uniq.sort_by {|key| key}
+    total_inventory.keys.uniq.sort_by {|item_name| item_name}
+  end
+
+  def sell(item, quantity)
+    return false if total_inventory[item] == nil || quantity > total_inventory[item]
+    vendors_that_sell(item).each do |vendor|
+      if vendor.check_stock(item) >= quantity
+        vendor.inventory[item] -= quantity
+      else
+        quantity -= vendor.inventory[item]
+        vendor.inventory[item] = 0
+      end
+    end
+    return true
   end
 
 end
