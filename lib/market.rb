@@ -1,4 +1,4 @@
-class Market 
+class Market
   attr_reader :name, :vendors
 
   def initialize(name)
@@ -16,13 +16,8 @@ class Market
 
   def vendors_that_sell(item_name)
     vendors_with_item = vendors.find_all do |vendor|
-      has_item = false
-      vendor.inventory.each do |inv_item_name, quantity|
-        if inv_item_name == item_name && quantity > 0
-          has_item = true
-        end
-      end
-      has_item
+      vendor.inventory.any? {|inv_item_name, quantity|
+        inv_item_name == item_name && quantity > 0}
     end
     vendors_with_item
   end
